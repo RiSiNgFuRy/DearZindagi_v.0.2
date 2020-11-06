@@ -3,8 +3,10 @@ package com.project_work.dearzindagiv02;
 import android.annotation.TargetApi;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.os.Build;
 import android.widget.Toast;
 
@@ -35,19 +37,31 @@ public class NotificationHelper extends ContextWrapper {
         return mManager;
     }
     public NotificationCompat.Builder getChannelNotification() {
-        Listdb db = new Listdb(this);
+        Intent repeat_intent =new Intent(getApplicationContext(),HomeActivity.class);
+        repeat_intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent=PendingIntent.getActivity(getApplicationContext(),1,repeat_intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+   /*     Listdb db = new Listdb(this);
         String message = null;
         try {
             db.open();
-            message = db.getData();
+            String []time= db.getTime().split(",");
+            int i=0;
+            while(!time[i].equals("end"))
+            {
+                message = db.getData(time[i]);
+                i++;
+            }
             db.close();
         } catch (SQLException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
         return new NotificationCompat.Builder(this, channelID)
-                .setContentTitle("Alarm")
-                .setContentText(message)
-                .setSmallIcon(R.drawable.ic_android);
+                .setContentIntent(pendingIntent)
+                .setContentTitle("Dear Zindagi")
+                .setContentText("It is time for your medicines.")
+                .setSmallIcon(R.drawable.ic_android)
+                .setAutoCancel(true);
     }
 }

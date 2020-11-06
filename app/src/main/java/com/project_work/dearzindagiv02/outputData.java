@@ -40,6 +40,6 @@ public class outputData extends Fragment {
     public void getNotifiedDataChanged()
     {
         myadapter.notifyDataSetChanged();
-    }
+    }//------Code=0(check HomeActivity)------
 }
 

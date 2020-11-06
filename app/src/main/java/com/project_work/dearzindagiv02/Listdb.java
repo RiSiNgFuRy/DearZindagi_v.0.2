@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.view.View;
 
 import java.sql.SQLException;
 
@@ -21,7 +22,7 @@ public class Listdb {
     private final int DATABASE_VERSION=1;
 
     private DBHelper ourHelper;
-    private final Context ourContext;
+    private Context ourContext;
     private SQLiteDatabase ourDatabase;
 
     public Listdb(Context context){
@@ -77,37 +78,94 @@ public class Listdb {
         return ourDatabase.insert(DATABASE_TABLE,null,cv);
     }
 
-  /*  public String getTime() {
+    public String getTime() {
         Cursor c = ourDatabase.query(DATABASE_TABLE, new String[]{KEY_TIME}, null, null, KEY_TIME, null, KEY_TIME);
-        String time="";
         int Time=c.getColumnIndex(KEY_TIME);
-
-    }*/
-
-
-    public String getData()
-    {
-        String []columns=new String[] {KEY_ROWID,KEY_TIME,KEY_NAME,KEY_NUMOFTIMES,KEY_EXPIRY,KEY_DESCRIPTION};
-        Cursor c= ourDatabase.query(DATABASE_TABLE,columns,null,null,null,null,KEY_TIME);
         String result="";
-        int RowID=c.getColumnIndex(KEY_ROWID);
-        int Time=c.getColumnIndex(KEY_TIME);
-        int Name=c.getColumnIndex(KEY_NAME);
-        int num_of_times=c.getColumnIndex(KEY_NUMOFTIMES);
-        int expiry=c.getColumnIndex(KEY_EXPIRY);
-        int description=c.getColumnIndex(KEY_DESCRIPTION);
-
         for(c.moveToFirst();!c.isAfterLast();c.moveToNext())
         {
-            result+=c.getString(Time)+" "+c.getString(RowID)+" : "+c.getString(Name)+" * "+c.getString(num_of_times)+" "+c.getString(expiry)+"\n";
-                if(!c.getString(description).isEmpty())
-                {
-                    result+=c.getString(description)+"\n";
-                }
+            result+=c.getString(Time)+",";
+            if(c.isLast())
+                result+="end";
         }
-        c.close();
         return result;
     }
+    public String getKeyName(String time) {
+        Cursor c = ourDatabase.query(DATABASE_TABLE, new String[]{KEY_NAME,KEY_TIME}, null, null, null, null, KEY_TIME);
+        int Name=c.getColumnIndex(KEY_NAME);
+        int Time=c.getColumnIndex(KEY_TIME);
+        String result="";
+        for(c.moveToFirst();!c.isAfterLast();c.moveToNext())
+        {
+            if(c.getString(Time).equals(time)){
+                result+=c.getString(Name);
+                if(!c.isLast())
+                    result+="\n";
+            }
+        }
+        return result;
+    }
+    public String getKeyNumoftimes(String time) {
+        Cursor c = ourDatabase.query(DATABASE_TABLE, new String[]{KEY_NUMOFTIMES,KEY_TIME}, null, null, null, null, KEY_TIME);
+        int Numoftimes=c.getColumnIndex(KEY_NUMOFTIMES);
+        int Time=c.getColumnIndex(KEY_TIME);
+        String result="";
+        for(c.moveToFirst();!c.isAfterLast();c.moveToNext())
+        {
+            if(c.getString(Time).equals(time)){
+                result+=c.getString(Numoftimes);
+                if(!c.isLast())
+                    result+="\n";
+            }
+        }
+        return result;
+    }
+    public String getKeyExpiry(String time) {
+        Cursor c = ourDatabase.query(DATABASE_TABLE, new String[]{KEY_EXPIRY,KEY_TIME}, null, null, null, null, KEY_TIME);
+        int Expiry=c.getColumnIndex(KEY_EXPIRY);
+        int Time=c.getColumnIndex(KEY_TIME);
+        String result="";
+        for(c.moveToFirst();!c.isAfterLast();c.moveToNext())
+        {
+            if(c.getString(Time).equals(time)){
+                result+=c.getString(Expiry);
+                if(!c.isLast())
+                    result+="\n";
+            }
+        }
+        return result;
+    }
+    public String getKeyDescription(String time) {
+        Cursor c = ourDatabase.query(DATABASE_TABLE, new String[]{KEY_DESCRIPTION,KEY_TIME}, null, null, null, null, KEY_TIME);
+        int Description=c.getColumnIndex(KEY_DESCRIPTION);
+        int Time=c.getColumnIndex(KEY_TIME);
+        String result="";
+        for(c.moveToFirst();!c.isAfterLast();c.moveToNext())
+        {
+            if(c.getString(Time).equals(time)){
+                result+=c.getString(Description);
+                if(!c.isLast())
+                    result+="\n";
+            }
+        }
+        return result;
+    }
+    public String getKeyRowid(String time) {
+        Cursor c = ourDatabase.query(DATABASE_TABLE, new String[]{KEY_ROWID,KEY_TIME}, null, null, null, null, KEY_TIME);
+        int rowID=c.getColumnIndex(KEY_ROWID);
+        int Time=c.getColumnIndex(KEY_TIME);
+        String result="";
+        for(c.moveToFirst();!c.isAfterLast();c.moveToNext())
+        {
+            if(c.getString(Time).equals(time)){
+                result+=c.getString(rowID);
+                if(!c.isLast())
+                    result+=",";
+            }
+        }
+        return result;
+    }
+
     public String getData(String time)
     {
         String []columns=new String[] {KEY_ROWID,KEY_TIME,KEY_NAME,KEY_NUMOFTIMES,KEY_EXPIRY,KEY_DESCRIPTION};
@@ -122,15 +180,13 @@ public class Listdb {
 
         for(c.moveToFirst();!c.isAfterLast();c.moveToNext())
         {
-            if(c.getString(Time)==time){
-                result+=c.getString(Time)+" "+c.getString(RowID)+" : "+c.getString(Name)+" * "+c.getString(num_of_times)+" "+c.getString(expiry)+"\n";
+            if(c.getString(Time).equals(time)){
+                result+=c.getString(Time)+" "+c.getString(RowID)+" "+c.getString(Name)+" * "+c.getString(num_of_times)+" "+c.getString(expiry)+"\n";
                 if(!c.getString(description).isEmpty())
                 {
                     result+=c.getString(description)+"\n";
                 }
             }
-            else
-                break;
         }
         c.close();
         return result;
@@ -138,5 +194,15 @@ public class Listdb {
     public long deleteEntry(String rowID)
     {
         return ourDatabase.delete(DATABASE_TABLE,KEY_ROWID+"=?",new String[]{rowID});
+    }
+
+    public boolean isEmpty()
+    {
+        boolean e=true;
+        Cursor c=ourDatabase.rawQuery("SELECT COUNT(*) FROM "+DATABASE_TABLE,null);
+        if(c!=null && c.moveToFirst())
+            e=(c.getInt(0))==0;
+        c.close();
+        return e;
     }
 }
