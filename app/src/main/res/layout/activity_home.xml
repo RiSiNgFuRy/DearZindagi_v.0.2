@@ -18,7 +18,7 @@
             android:name="com.project_work.dearzindagiv02.outputData"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="2"
             tools:layout="@layout/fragment_output_data" />
 
         <fragment

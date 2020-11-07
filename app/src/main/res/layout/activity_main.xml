@@ -8,10 +8,9 @@
 
     <ImageView
         android:id="@+id/app_logo"
-        android:layout_width="398dp"
-        android:layout_height="464dp"
+        android:layout_width="448dp"
+        android:layout_height="445dp"
         android:layout_marginStart="10dp"
-
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,6 +21,7 @@
         app:srcCompat="@mipmap/ic_logo_foreground" />
 
     <LinearLayout
+        android:id="@+id/app_name_lay"
         android:layout_width="wrap_content"
         android:layout_height="81dp"
         android:layout_marginBottom="55dp"
@@ -37,6 +37,7 @@
             android:layout_gravity="center"
             android:fontFamily="@font/aclonica"
             android:text="Dear Zindagi"
+            android:textColor="#0B0317"
             android:textSize="50sp"
             android:textStyle="bold" />
 
@@ -48,6 +49,7 @@
             android:gravity="center"
             android:text="Always taking care of your health"
             android:textAllCaps="true"
+            android:textColor="#090953"
             android:textSize="10sp"
             android:textStyle="bold" />
     </LinearLayout>

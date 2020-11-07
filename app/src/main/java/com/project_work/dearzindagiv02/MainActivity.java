@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         app_logo=findViewById(R.id.app_logo);
 
         app_logo.setAnimation(AnimationUtils.loadAnimation(this,R.anim.fadein_top));
+        findViewById(R.id.app_name_lay).setAnimation(AnimationUtils.loadAnimation(this,R.anim.fadein_bottom));
         app_name.setAnimation(AnimationUtils.loadAnimation(this,R.anim.fadein_bottom));
         app_slogan.setAnimation(AnimationUtils.loadAnimation(this,R.anim.fadein_bottom));
 

@@ -47,7 +47,6 @@ public class HomeActivity extends AppCompatActivity implements timings_adapter.I
     outputData outputData;
     FragmentManager fragmentManager;
     String time;
-    LinearLayout quantity_area;
     RadioGroup state_check;
     RadioButton radioButton;
 
