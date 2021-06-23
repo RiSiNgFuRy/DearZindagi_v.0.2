@@ -1,6 +1,7 @@
 package com.project_work.dearzindagiv02;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -11,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.Layout;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
@@ -20,11 +22,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.sql.SQLException;
 import java.sql.Time;
@@ -40,7 +44,7 @@ import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity implements timings_adapter.ItemSelected, TimePickerDialog.OnTimeSetListener {
 
-    TextView med_name, med_exp_date, description,for_check,state_text;//------for_check using for testing purpose(not part of project)------
+    TextView med_name, med_exp_date, description,state_text;//------for_check using for testing purpose(not part of project)------
     ElegantNumberButton num_of_tabs;
     Button add_alarm, del_alarm, save_btn;
     ImageButton next_page_btn, back_page_btn;
@@ -49,6 +53,8 @@ public class HomeActivity extends AppCompatActivity implements timings_adapter.I
     String time;
     RadioGroup state_check;
     RadioButton radioButton;
+    FloatingActionButton floatingActionButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +63,6 @@ public class HomeActivity extends AppCompatActivity implements timings_adapter.I
 
         state_check=findViewById(R.id.state_check);
         state_text=findViewById(R.id.state_text);
-        for_check=findViewById(R.id.for_check);
         save_btn = findViewById(R.id.save_btn);
         add_alarm = findViewById(R.id.add_alarm);
         del_alarm = findViewById(R.id.del_alarm);
@@ -66,7 +71,7 @@ public class HomeActivity extends AppCompatActivity implements timings_adapter.I
         med_exp_date = findViewById(R.id.med_exp_date);
         description = findViewById(R.id.description);
         num_of_tabs = findViewById(R.id.num_of_tabs);
-        back_page_btn = findViewById(R.id.back_page_btn);
+        floatingActionButton = findViewById(R.id.floatingActionButton);
 
         fragmentManager = this.getSupportFragmentManager();
         outputData = (outputData) fragmentManager.findFragmentById(R.id.list_frag);//------to get access to output fragment------
@@ -83,7 +88,7 @@ public class HomeActivity extends AppCompatActivity implements timings_adapter.I
             e.printStackTrace();
         }
 
-        findViewById(R.id.list_frag).setVisibility(View.GONE);
+        findViewById(R.id.input_frag).setVisibility(View.GONE);
         findViewById(R.id.quantity_area).setVisibility(View.GONE);
         next_page_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +97,7 @@ public class HomeActivity extends AppCompatActivity implements timings_adapter.I
                   findViewById(R.id.list_frag).setVisibility(View.VISIBLE);
             }
         });
-        back_page_btn.setOnClickListener(new View.OnClickListener() {
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                   findViewById(R.id.input_frag).setVisibility(View.VISIBLE);
@@ -155,19 +160,20 @@ public class HomeActivity extends AppCompatActivity implements timings_adapter.I
     @Override
     public void onDeleteClick(int index) {                 //------Don't know why this is not working(declaration is in timings_adapter) Code=1------
         //for_check.setText(ApplicationClass.times.get(index).getTime());
-        ApplicationClass.times.remove(index);              //------Content inside this is perfectly working(you can test it by copying same thing in onItemClicked)------
-        outputData.getNotifiedDataChanged();
+        //------Content inside this is perfectly working(you can test it by copying same thing in onItemClicked)------
         Listdb db=new Listdb(this);
         try {
             db.open();
             String []rowIDs=db.getKeyRowid(ApplicationClass.times.get(index).getTime()).split(",");
             int i=0;
-            if(i<rowIDs.length)
+            while(i<rowIDs.length)
             {
-                db.deleteEntry("i");
-                for_check.setText(rowIDs[i]);
+                db.deleteEntry(rowIDs[i]);
                 i++;
             }
+            ApplicationClass.times.remove(index);
+            if (ApplicationClass.times.isEmpty())
+                findViewById(R.id.no_entry_txt).setVisibility(View.VISIBLE);
             outputData.getNotifiedDataChanged();
         } catch (SQLException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -186,7 +192,7 @@ public class HomeActivity extends AppCompatActivity implements timings_adapter.I
     private void startAlarm (Calendar c) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1,intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),AlarmManager.INTERVAL_DAY, pendingIntent);
     }
     private void cancelAlarm () {

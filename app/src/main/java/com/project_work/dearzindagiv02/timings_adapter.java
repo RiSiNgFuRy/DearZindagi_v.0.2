@@ -34,7 +34,7 @@ public class timings_adapter extends RecyclerView.Adapter<timings_adapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView shows_time,out_name,out_numoftimes,out_expiry,content;
         ImageView out_del_btn;
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
             out_name=itemView.findViewById(R.id.out_name);
             content=itemView.findViewById(R.id.content);
@@ -51,7 +51,7 @@ public class timings_adapter extends RecyclerView.Adapter<timings_adapter.ViewHo
             out_del_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {                   //------Code=1(Check HomeActivity)------
-                    activity.onDeleteClick(time.indexOf((timings)v.getTag()));
+                    activity.onDeleteClick(time.indexOf(itemView.getTag()));
                     }
             });
         }
@@ -68,7 +68,6 @@ public class timings_adapter extends RecyclerView.Adapter<timings_adapter.ViewHo
     public void onBindViewHolder(@NonNull timings_adapter.ViewHolder holder, final int position){
         holder.itemView.setTag(time.get(position));
         holder.shows_time.setText(time.get(position).getTime());
-        holder.content.setText(time.get(position).getContent());
         holder.out_name.setText(time.get(position).getName());
         holder.out_numoftimes.setText(time.get(position).getNumoftimes());
         holder.out_expiry.setText(time.get(position).getExpiry());

@@ -9,9 +9,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        app:cardBackgroundColor="#EAE9E9"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="5dp"
+        app:cardBackgroundColor="#33474646"
+        app:cardCornerRadius="5dp"
+        android:elevation="5dp"
+        android:clickable="true"
+
         app:cardUseCompatPadding="false">
 
         <LinearLayout
@@ -22,6 +24,7 @@
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
+                android:padding="5dp"
                 android:layout_height="80dp"
                 android:layout_weight="9"
                 android:src="@drawable/ic_alarm" />
@@ -51,23 +54,18 @@
                     <ImageView
                         android:id="@+id/out_del_btn"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_gravity="right"
                         app:srcCompat="@drawable/ic_delete"
                         tools:ignore="VectorDrawableCompat" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" />
-
                 <TableLayout
+                    android:id="@+id/out_list_of_med"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
-                    android:background="#B5B0B0">
+                    android:background="#858585">
 
                     <TableRow
                         android:layout_width="match_parent"
@@ -82,6 +80,7 @@
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="Name"
+                            android:background="#66858585"
                             android:textAllCaps="true"
                             android:textColor="#4E4C4C"
                             android:textSize="14sp"
@@ -95,6 +94,7 @@
                             android:layout_marginRight="2dp"
                             android:layout_weight="1"
                             android:gravity="center"
+                            android:background="#66858585"
                             android:text="Num of Tablets"
                             android:textAllCaps="true"
                             android:textColor="#4E4C4C"
@@ -109,6 +109,7 @@
                             android:layout_marginRight="2dp"
                             android:layout_weight="1"
                             android:gravity="center"
+                            android:background="#66858585"
                             android:text="Expiry"
                             android:textAllCaps="true"
                             android:textColor="#4E4C4C"
@@ -120,32 +121,39 @@
                     <TableRow
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="4dp"
-                        android:background="#D8D7D7">
+                        android:layout_marginTop="4dp">
 
                         <TextView
                             android:id="@+id/out_name"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_margin="5px"
                             android:layout_weight="1"
                             android:gravity="left"
-                            android:paddingLeft="10dp"
+                            android:maxWidth="100dp"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:background="#D8D7D7"
                             android:text="TextView" />
 
                         <TextView
                             android:id="@+id/out_num0ftimes"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:layout_margin="5px"
+                            android:layout_weight="2"
                             android:gravity="center"
+                            android:background="#D8D7D7"
                             android:text="TextView" />
 
                         <TextView
                             android:id="@+id/out_expiry"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_margin="5px"
                             android:layout_weight="1"
                             android:gravity="center"
+                            android:background="#D8D7D7"
                             android:text="TextView" />
 
                     </TableRow>

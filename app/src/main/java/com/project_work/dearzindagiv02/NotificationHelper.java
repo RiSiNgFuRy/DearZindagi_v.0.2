@@ -1,5 +1,6 @@
 package com.project_work.dearzindagiv02;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -13,11 +14,15 @@ import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class NotificationHelper extends ContextWrapper {
-    public static final String channelID = "channelID";
-    public static final String channelName = "Channel Name";
+    public static final String channelID = "0";
+    public static final String channelName = "Alert for Medicines";
     private NotificationManager mManager;
     public NotificationHelper(Context base) {
         super(base);
@@ -41,27 +46,29 @@ public class NotificationHelper extends ContextWrapper {
         repeat_intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent=PendingIntent.getActivity(getApplicationContext(),1,repeat_intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
-   /*     Listdb db = new Listdb(this);
+        Intent fullScreenIntent = new Intent(this, HomeActivity.class);
+        PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(this, 0, fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a");
+        String current_time = simpleDateFormat.format(c.getTime());
+        Listdb db = new Listdb(this);
         String message = null;
         try {
             db.open();
-            String []time= db.getTime().split(",");
-            int i=0;
-            while(!time[i].equals("end"))
-            {
-                message = db.getData(time[i]);
-                i++;
-            }
+            message = db.getKeyName(current_time);
             db.close();
         } catch (SQLException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }*/
-
+        }
         return new NotificationCompat.Builder(this, channelID)
                 .setContentIntent(pendingIntent)
-                .setContentTitle("Dear Zindagi")
+                .setContentTitle("Medicines List")
                 .setContentText("It is time for your medicines.")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setSmallIcon(R.drawable.ic_android)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(message))
                 .setAutoCancel(true);
     }
 }

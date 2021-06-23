@@ -13,7 +13,7 @@ public class ApplicationClass extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        times=new ArrayList<timings>();
+        times = new ArrayList<timings>();
         try {
             Listdb db=new Listdb(this);
             db.open();

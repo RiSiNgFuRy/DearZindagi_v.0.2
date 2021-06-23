@@ -95,12 +95,22 @@ public class Listdb {
         int Name=c.getColumnIndex(KEY_NAME);
         int Time=c.getColumnIndex(KEY_TIME);
         String result="";
+        int i = 0;
+        int j = 0;
         for(c.moveToFirst();!c.isAfterLast();c.moveToNext())
         {
             if(c.getString(Time).equals(time)){
-                result+=c.getString(Name);
-                if(!c.isLast())
-                    result+="\n";
+                i++;
+            }
+        }
+        for(c.moveToFirst();!c.isAfterLast();c.moveToNext())
+        {
+            if(c.getString(Time).equals(time)){
+                result+= c.getString(Name);
+                if(j < i-1) {
+                    result += "\n";
+                    j++;
+                }
             }
         }
         return result;
@@ -110,12 +120,22 @@ public class Listdb {
         int Numoftimes=c.getColumnIndex(KEY_NUMOFTIMES);
         int Time=c.getColumnIndex(KEY_TIME);
         String result="";
+        int i = 0;
+        int j = 0;
+        for(c.moveToFirst();!c.isAfterLast();c.moveToNext())
+        {
+            if(c.getString(Time).equals(time)){
+                i++;
+            }
+        }
         for(c.moveToFirst();!c.isAfterLast();c.moveToNext())
         {
             if(c.getString(Time).equals(time)){
                 result+=c.getString(Numoftimes);
-                if(!c.isLast())
-                    result+="\n";
+                if(j < i-1) {
+                    result += "\n";
+                    j++;
+                }
             }
         }
         return result;
@@ -125,12 +145,22 @@ public class Listdb {
         int Expiry=c.getColumnIndex(KEY_EXPIRY);
         int Time=c.getColumnIndex(KEY_TIME);
         String result="";
+        int i = 0;
+        int j = 0;
+        for(c.moveToFirst();!c.isAfterLast();c.moveToNext())
+        {
+            if(c.getString(Time).equals(time)){
+                i++;
+            }
+        }
         for(c.moveToFirst();!c.isAfterLast();c.moveToNext())
         {
             if(c.getString(Time).equals(time)){
                 result+=c.getString(Expiry);
-                if(!c.isLast())
-                    result+="\n";
+                if(j < i-1) {
+                    result += "\n";
+                    j++;
+                }
             }
         }
         return result;

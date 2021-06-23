@@ -29,7 +29,7 @@ public class outputData extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         recyclerView=view.findViewById(R.id.list);
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(false);
 
         layoutManager=new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
